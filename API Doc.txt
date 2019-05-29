@@ -1,0 +1,93 @@
+============REST API Register.php =============================
+https://cop4331.a2hosted.com/api/Register.php
+
+JSON TO SEND (VALID)
+
+{ 
+  "FirstName" : "Mark",
+  "LastName" : "Fuller",
+  "AccountName" : "mfuller",
+  "Password" : "welcome123"
+}
+
+JSON RECIEVED (VALID)
+{
+"error": ""
+}
+  
+  Note: Sets a PHP session cookie for AccountID
+        Registering does not require separate login
+  
+INVALID RESPONSE EXAMPLES:
+
+{
+"error": "Missing required fields"
+}
+
+{
+"error": "Duplicate entry 'mfuller' for key 'AccountName'"
+}
+
+{
+"error": "Access denied for user 'copahost_dbuser1'@'localhost' (using password: YES)"
+}
+
+============REST API Login.php =============================
+https://cop4331.a2hosted.com/api/Login.php
+
+JSON TO SEND (VALID)
+
+{ 
+  "AccountName" : "mfuller",
+  "Password" : "welcome123"
+}
+
+JSON RECIEVED (VALID)
+{
+"error": ""
+}
+  Note: Sets a PHP session cookie for AccountID
+
+
+INVALID RESPONSE EXAMPLES:
+
+{
+"error": "Missing required fields"
+}
+
+{
+"error": "Invalid user name or password"
+}
+
+============REST API InsertContact.php =============================
+https://cop4331.a2hosted.com/api/InsertContact.php
+
+JSON TO SEND (VALID)
+
+{ 
+  "FirstName" : "Mark",
+  "LastName" : "Fuller",
+  "Address1" : "3043 Holland Dr.",
+  "City" : "Orlando",
+  "State" : "FL",
+  "Zip" : "32825",
+  "Phone" : "(407) 399-1373",
+  "Email" : "fuller.mark.e@gmail.com"
+}
+
+JSON RECIEVED (VALID)
+{
+"error": ""
+}
+
+INVALID RESPONSE EXAMPLES:
+
+{
+"error": "Missing required fields"
+}
+
+{
+"error": "Authorization required"
+}
+
+============REST API ShowContacts.php =============================
