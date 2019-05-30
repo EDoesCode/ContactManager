@@ -157,3 +157,23 @@ JSON RECIEVED (VALID)
 INVALID RESPONSE EXAMPLES:
 { "error" : "Authorization required"}
 { "error" : "Missing required fields" }
+
+============REST API UpdateContact.php =============================
+https://cop4331.a2hosted.com/api/UpdateContact.php
+
+JSON TO SEND (VALID)
+{
+    "ContactID": "7",
+    "FirstName": "Alan",
+    "LastName": "Fuller",
+    "Address1": "3043 Holland Dr.",
+    "Address2": "",
+    "City": "Orlando",
+    "State": "FL",
+    "Zip": "32825",
+    "Email": " ",
+    "Phone": " "
+}
+
+Notes: ContactID is required, along with at least 1 other field.
+       To remove a line, set it to " " a blank space
