@@ -1,0 +1,15 @@
+#bodyTable
+
+/* Contact table formatting */
+#contactTable {
+	width: 100%;
+}
+#contactTable th {
+	margin: auto;
+}
+#contactTable tr:nth-child(odd){
+	background-color: #ede99e;
+}
+#contactTable tr:nth-child(even){
+	background-color: #f2efb8;
+}
