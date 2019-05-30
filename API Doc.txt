@@ -144,3 +144,16 @@ INVALID RESPONSE EXAMPLES:
 { "error" : "Authorization required"}
 { "error" : "Missing required fields" }
 { "error" : "No Records Found" }
+
+============REST API DeleteContact.php =============================
+https://cop4331.a2hosted.com/api/DeleteContact.php
+
+JSON TO SEND (VALID)
+{ "ContactID" : "3" }
+
+JSON RECIEVED (VALID)
+{ "error" : "" }
+
+INVALID RESPONSE EXAMPLES:
+{ "error" : "Authorization required"}
+{ "error" : "Missing required fields" }
