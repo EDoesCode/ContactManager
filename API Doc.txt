@@ -2,7 +2,6 @@
 https://cop4331.a2hosted.com/api/Register.php
 
 JSON TO SEND (VALID)
-
 { 
   "FirstName" : "Mark",
   "LastName" : "Fuller",
@@ -11,26 +10,17 @@ JSON TO SEND (VALID)
 }
 
 JSON RECIEVED (VALID)
-{
-"error": ""
-}
+{ "error" : "" }
   
   Note: Sets a PHP session cookie for AccountID
         Registering does not require separate login
   
 INVALID RESPONSE EXAMPLES:
+{ "error" : "Missing required fields" }
 
-{
-"error": "Missing required fields"
-}
+{ "error" : "Duplicate entry 'mfuller' for key 'AccountName'" }
 
-{
-"error": "Duplicate entry 'mfuller' for key 'AccountName'"
-}
-
-{
-"error": "Access denied for user 'copahost_dbuser1'@'localhost' (using password: YES)"
-}
+{ "error" : "Access denied for user 'copahost_dbuser1'@'localhost' (using password: YES)" }
 
 ============REST API Login.php =============================
 https://cop4331.a2hosted.com/api/Login.php
@@ -43,21 +33,13 @@ JSON TO SEND (VALID)
 }
 
 JSON RECIEVED (VALID)
-{
-"error": ""
-}
+{ "error" : "" }
   Note: Sets a PHP session cookie for AccountID
 
 
 INVALID RESPONSE EXAMPLES:
-
-{
-"error": "Missing required fields"
-}
-
-{
-"error": "Invalid user name or password"
-}
+{ "error" : "Missing required fields" }
+{ "error" : "Invalid user name or password" }
 
 ============REST API InsertContact.php =============================
 https://cop4331.a2hosted.com/api/InsertContact.php
@@ -76,18 +58,89 @@ JSON TO SEND (VALID)
 }
 
 JSON RECIEVED (VALID)
-{
-"error": ""
-}
+{ "error" : "" }
 
 INVALID RESPONSE EXAMPLES:
-
-{
-"error": "Missing required fields"
-}
-
-{
-"error": "Authorization required"
-}
+{ "error" : "Missing required fields" }
+{ "error" : "Authorization required" }
 
 ============REST API ShowContacts.php =============================
+https://cop4331.a2hosted.com/api/ShowContacts.php
+
+JSON TO SEND (VALID)
+{ }
+
+JSON RECIEVED (VALID)
+[
+    {
+        "ContactID": "1",
+        "FirstName": "Mark",
+        "LastName": "Fuller",
+        "Address1": "3043 Holland Dr.",
+        "Address2": "",
+        "City": "Orlando",
+        "State": "FL",
+        "Zip": "32825",
+        "Email": "fuller.mark.e@gmail.com",
+        "Phone": "(407) 399-1373",
+        "AccountID": "2"
+    },
+    {
+        "ContactID": "2",
+        "FirstName": "Carmen",
+        "LastName": "Fuller",
+        "Address1": "3043 Holland Dr.",
+        "Address2": "",
+        "City": "Orlando",
+        "State": "FL",
+        "Zip": "32825",
+        "Email": "",
+        "Phone": "",
+        "AccountID": "2"
+    }
+]
+
+INVALID RESPONSE EXAMPLES:
+{ "error" : "Authorization required" }
+{ "error" : "No Records Found"}
+
+============REST API FilterContacts.php =============================
+https://cop4331.a2hosted.com/api/FilterContacts.php
+
+JSON TO SEND (VALID)
+{ "SearchText" : "car" }
+
+JSON RECIEVED (VALID)
+[
+    {
+        "ContactID": "1",
+        "FirstName": "Mark",
+        "LastName": "Fuller",
+        "Address1": "3043 Holland Dr.",
+        "Address2": "",
+        "City": "Orlando",
+        "State": "FL",
+        "Zip": "32825",
+        "Email": "fuller.mark.e@gmail.com",
+        "Phone": "(407) 399-1373",
+        "AccountID": "2"
+    },
+    {
+        "ContactID": "2",
+        "FirstName": "Carmen",
+        "LastName": "Fuller",
+        "Address1": "3043 Holland Dr.",
+        "Address2": "",
+        "City": "Orlando",
+        "State": "FL",
+        "Zip": "32825",
+        "Email": "",
+        "Phone": "",
+        "AccountID": "2"
+    }
+]
+
+INVALID RESPONSE EXAMPLES:
+{ "error" : "Authorization required"}
+{ "error" : "Missing required fields" }
+{ "error" : "No Records Found" }
