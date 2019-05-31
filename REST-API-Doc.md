@@ -50,7 +50,7 @@
    { "error" : "No Records Found"}
    ```
    
-   4. Name: Search for a Contact \
+4. Name: Search for a Contact \
    URL: https://cop4331.a2hosted.com/api/FilterContacts.php \
    Method: POST
    ```
