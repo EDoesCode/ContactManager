@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Contact Manager Register</title>
+		<script type="text/javascript" src="js/hashes.js">
 		<script type="text/javascript" src="js/register.js"></script>
 		<link href="css/register.css" rel="stylesheet">
 	</head>
@@ -9,12 +10,12 @@
 		<h1>Contact Manager Register</h1>
 		<div>
 			<span>Account Register</span><br />
-			<input type="text" placeholder="Username"/><br />
-			<input type="password" placeholder="Password"/><br />
-			<input type="password" placeholder="Repeat Password"><br />
-			<input type="text" placeholder="Email"/><br />
-			<input type="text" placeholder="Repeat Email"><br />
-			<button type="button"> Register </button>
+			<input type="text" placeholder="First Name" id="firstName"/><br />
+			<input type="text" placeholder="Last Name" id="lastName"/><br />
+			<input type="text" placeholder="User Name" id="accountName"/><br />
+			<input type="password" placeholder="Password" id="password"/><br />
+			<input type="password" placeholder="Repeat Password" id="repeatPassword" /><br />
+			<button type="button" onclick="register()";> Register </button>
 		</div>
 	</body>
 </html>
