@@ -1,19 +1,59 @@
 <html>
 	<head>
-		<title>Contact Manager Contacts</title>
-		<script type="text/javascript" src="js/contact_page.js>
+		<title>Contact Manager - Contacts</title>
+		<script type="text/javascript" src="js/contact_page.js">
 		</script>
 		<link href="css/contact_page.css" rel="stylesheet">
 		<link href="css/styles.css" rel="stylesheet">
+		<link href="js/contact_page.js" rel="javascript">
+		<script type="text/javascript" src="js/contact_page.js"></script>
 	</head>
 
 	<body>
 		<div id="mainBox">
+			<h1>Your Contacts</h1>
 			<table id="bodyTable">
-			<th>Your Contacts</th>
-				<table id="ContactTable">
-				
+			<tr>
+				<td id="searchCell">
+					<h3>Search Contacts</h3>
+					<input type="text" id="searchText"/>
+					<input type="button" value="Search" onclick="searchContacts()"/>
+					<br /> <br />
+					<div id="responseText">dafsdaf</div>
+				</td>
+				<td id="listCell" rowspan="2">
+				<table id="contactTable">
+				<tr>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Phone</th>
+					<th>Email</th>
+					<th colspan="2">Address</th>
+					<th>City</th>
+					<th>State</th>
+					<th>ZIP</th>
+				</tr>
 				</table>
+				</td>
+			</tr>
+			<tr>
+				<td id="addCell">
+				<h3>New Contact</h3>
+				<table id="addTable">
+					<tr><td>First Name:</td><td><input type="text" id="firstName"/></td></tr>
+					<tr><td>Last Name:</td> <td><input type="text" id="lastName"/></td></tr>
+					<tr><td>Phone:</td> <td><input type="text" id="phone"/></td></tr>
+					<tr><td>Email:</td> <td><input type="text" id="email"/></td></tr>
+					<tr><td>Address (1):</td> <td><input type="text" id="address1"/></td></tr>
+					<tr><td>Address (2):</td> <td><input type="text" id="address2"/></td></tr>
+					<tr><td>City:</td> <td><input type="text" id="city"/></td></tr>
+					<tr><td>State:</td> <td><input type="text" id="zip"/></td></tr>
+					<tr><td colspan=2><input type="submit" value="Add Contact" /></td></tr>
+				</table>
+				</td>
+				<div id="addText"></div>
+			</tr>
+			</table>
 		</div>
 	</body>
 </html>
