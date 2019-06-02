@@ -44,12 +44,12 @@ function register()
 
 	try
 	{
-		var jsonResponse = JSON.parse(xhr.responseText);
 
 		xhr.onreadystatechange = function()
 		{
 			if(this.readyState == 4 && this.status == 200)
 			{
+				var jsonResponse = JSON.parse(xhr.responseText);
 				if(jsonResponse.error.length == 0)
 					window.location = baseURL + "contact_page.html";
 				else
