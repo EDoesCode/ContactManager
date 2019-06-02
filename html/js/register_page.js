@@ -1,4 +1,4 @@
-var baseURL = "https://cop4331.a2hosted.com/enelson/";
+var baseURL = "https://cop4331.a2hosted.com/";
 var url = "https://cop4331.a2hosted.com/api/Register.php";
 
 var firstName = "";
@@ -36,22 +36,20 @@ function register()
 
 	newPassword = SHA512.hex(newPassword);
 
-	var jsonPayload = '{"FirstName" : "' + firstName + '", "LastName" : "' + lastName + '", "AccountName" : "' + accountName + '", "Password" : "' + newPassword + '"}';
+	var jsonPayload = '{"FirstName" : ' + firstName + ', "LastName" : ' + lastName + ', "AccountName" : ' + accountName + ', "Password" : ' + newPassword + '}';
 
-	console.log(jsonPayload);
-	var xhr = new XMLHttpRequest();
+	var xhr = XMLHttpRequest();
 	xhr.open("POST", url, true,);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
 	try
 	{
+		var jsonResponse = JSON.parse(xhr.responseText);
 
 		xhr.onreadystatechange = function()
 		{
 			if(this.readyState == 4 && this.status == 200)
 			{
-				var jsonResponse = JSON.parse(xhr.responseTest);
-				console.log(jsonResponse);
 				if(jsonResponse.error.length == 0)
 					window.location = baseURL + "contact_page.html";
 				else
