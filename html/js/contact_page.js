@@ -2,7 +2,7 @@
 var dataMap = ["FirstName", "LastName", "Phone", "Email", "Address1", "Address2", "City", "State", "Zip"];
 
 // Lists the sizes of various fields of a Contact in the order they are displayed, -1 for infinite size
-var dataSize = [-1, -1, 12, -1, -1, -1, -1, 2, 5];
+var dataSize = [-1, -1, 15, -1, -1, -1, -1, 2, 5];
 
 // Sends an XML post to the given API name using the given JS object as payload, and runs the provided function (reaction) on success
 // If the XML post fails (for whatever reason) it outputs the text in the given error text field
@@ -17,8 +17,31 @@ function apiRequest(name, payload, errorField, reaction)
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	
 	// Defining reaction function
-	xhr.onreadystatechange = reaction;
-	
+	xhr.onreadystatechange = function()
+	{
+		// If the returned JSON has an error, it will be displayed in errorField
+		try
+		{
+			// Only runs reaction after receiving the JSON
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				// Checking received JSON for a non-null error field
+				console.log("Received from "+url+":\n"+this.responseText);
+				var parsedJSON = JSON.parse(this.responseText);
+				if (parsedJSON.error == "")
+					reaction();
+				else
+				{
+					throw new Error(parsedJSON.error);
+				}
+			}
+		}
+		catch(err)
+		{
+			// Displays error from JSON in the error field
+			errorField.innerHTML = err.message;
+		}
+	}
 	// Echoing JSON to console
 	console.log("Sending to "+url+": \n"+JSON.stringify(payload));
 	
@@ -33,7 +56,7 @@ function apiRequest(name, payload, errorField, reaction)
 	}
 }
 
-// Adds a contact
+// Adds a contact to the database and to the table
 function addContact()
 {
 	// Finding data fields
@@ -41,20 +64,44 @@ function addContact()
 	var data = dataTable.getElementsByTagName("input");
 	// Building payload
 	var payload = {
-	FirstName:	data["firstName"].value,
-	LastName:	data["lastName"].value,
-	Address1:	data["address1"].value,
-	Address2:	data["address2"].value,
-	City:		data["city"].value,
-	State:		data["state"].value,
-	Zip:		data["zip"].value,
-	Phone:		data["phone"].value,
-	Email:		data["email"].value
+	FirstName:	data["FirstName"].value,
+	LastName:	data["LastName"].value,
+	Address1:	data["Address1"].value,
+	Address2:	data["Address2"].value,
+	City:		data["City"].value,
+	State:		data["State"].value,
+	Zip:		data["Zip"].value,
+	Phone:		data["Phone"].value,
+	Email:		data["Email"].value
 	};
+	// Clearing data fields
+	var i;
+	for (i = 0; i < dataMap.length; i++)
+		data[dataMap[i]].value = "";
 	var errorField = document.getElementById("addText");
 	apiRequest("InsertContact", payload, errorField, function() {
+		// Confirming success to the user
 		var errorField = document.getElementById("addText");
 		errorField.innerHTML = "Your contact has been added.";
+		
+		// Adding contact to list
+		try
+		{
+			var contact = JSON.parse(this.responseText);
+			// If JSON has ContactID, it is considered a valid contact
+			if (contact["ContactID"] != null)
+			{
+				var table = document.getElementById("contactTable");
+				addContactRow(table.rows.length, contact);
+			}
+		}
+		catch(err)
+		{
+			// JSON was not parseable
+			var errorField = document.getElementById("addText");
+			errorField.innerHTML = "Did not receive response from server.";
+		}
+		
 	});
 }
 
@@ -66,6 +113,7 @@ function getAllContacts()
 	var errorField = document.getElementById("responseText");
 	apiRequest("ShowContacts", payload, errorField, buildContactTable);
 }
+
 // Searches through the database for Contacts and updates the table 
 function searchContacts()
 {
@@ -75,26 +123,23 @@ function searchContacts()
 	var srch = document.getElementById("searchText").value;
 	
 	// Payload (to be JSONified later)
-	var payload = {search: srch};
+	var payload = {SearchText: srch};
 	apiRequest("FilterContacts", payload, errorField, buildContactTable);
 }
 
 // Builds contact table when called by a successful XML HTTP Request
 function buildContactTable()
 {
-	if (this.readyState == 4 && this.status == 200) 
-	{	
-		// Reloading the contact list
-		var contactList = JSON.parse(this.responseText );
-		clearContactTable();
-		var i;
-		// Adding each row individually
-		for (i=0; i<contactList.length; i++)
-		{
-			addContactRow(i, contactList[i]);
-		}
+	// Reloading the contact list
+	var contactList = JSON.parse(this.responseText);
+	clearContactTable();
+	var i;
+	// Adding each row individually
+	for (i=0; i<contactList.length; i++)
+	{
+		addContactRow(i, contactList[i]);
 	}
-		/*
+	/*
 		// Testing script with hardcoded data
 		clearContactTable();
 		var contactList = new Array();
@@ -105,12 +150,12 @@ function buildContactTable()
 		contactList[4] = {FirstName: "Jonathan", LastName: "Doe", Address1: "1234 Sesame St", Address2: "", City: "Nowhere", State: "NA", Zip: "123456", Phone: "123-456-7890", Email: "johnny@gmail.com", ContactID: "5"};
 		contactList[5] = {FirstName: "Jill", LastName: "Doe", Address1: "1234 Sesame St", Address2: "", City: "Nowhere", State: "NA", Zip: "123456", Phone: "123-456-7890", Email: "johnny@gmail.com", ContactID: "6"};
 		contactList[6] = {FirstName: "Jackson", LastName: "Doe", Address1: "1234 Sesame St", Address2: "", City: "Nowhere", State: "NA", Zip: "123456", Phone: "123-456-7890", Email: "johnny@gmail.com", ContactID: "7"};
-		clearContactTable();
 		var i;
 		for (i=0; i<contactList.length; i++)
 		{
 			addContactRow(i + 1, contactList[i]);
-		}*/
+		}
+	*/
 }
 
 // Clears all rows (other than the header) from the Contact Table
@@ -118,9 +163,8 @@ function clearContactTable()
 {
 	var table = document.getElementById("contactTable");
 	var rows = table.rows;
-	var i;
-	for (i = 1; i < rows.length; i++)
-		table.deleteRow(i);
+	while (rows.length > 1)
+		table.deleteRow(1);
 }
 
 // Transforms one Contact JSON into a row for contactTable and adds it
@@ -202,7 +246,7 @@ function makeChangeableRow(contactID)
 	}
 	// Changing button functionality to saving changes
 	btn.innerHTML = "Save";
-	btn.setAttribute("onclick", "changeRow("+contactID+")");
+	btn.setAttribute("onclick", "modifyContact("+contactID+")");
 }
 
 // Modifies a contact changed in the table row
@@ -226,11 +270,13 @@ function modifyContact(contactID)
 	if (data[contactID+"Address2"] != null)
 		payload["Address2"] = data[contactID+"Address2"];
 	// Sending payload
-	var errorField = document.getElementById("responseField");
+	var errorField = document.getElementById("tableResponse");
 	apiRequest("UpdateContact", payload, errorField, function() {
 		// Confirming success to the user.
-		var errorField = document.getElementById("addText");
-		errorField.innerHTML = "Your contact has been added.";
+		var errorField = document.getElementById("tableResponse");
+		errorField.innerHTML = "Your contact has been changed.";
+		// Changes row after successful modification
+		changeRow(contactID);
 	});
 }
 
@@ -239,7 +285,6 @@ function changeRow(contactID)
 {
 	row = document.getElementById("row"+contactID);
 	btn = document.getElementById("button"+contactID);
-	modifyContact(contactID);
 	// Getting cells
 	var cells = row.getElementsByTagName("td");
 	var i;
@@ -259,11 +304,11 @@ function changeRow(contactID)
 function deleteRow(contactID)
 {
 	var payload = {ContactID: contactID};
-	var errorField = document.getElementById("responseText");
-	apiRequest("DeleteContact", payload, errorField, function(contactID) {
-		var responseField = document.getElementById("responseText");
+	var errorField = document.getElementById("tableResponse");
+	apiRequest("DeleteContact", payload, errorField, function() {
+		var responseField = document.getElementById("tableResponse");
 		responseField.innerHTML = "Your contact has been removed.";
+		var row = document.getElementById("row"+contactID);
+		row.parentNode.removeChild(row);
 	});
-	var row = document.getElementById("row"+contactID);
-	row.parentNode.removeChild(row);
 }
