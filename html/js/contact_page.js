@@ -20,7 +20,7 @@ function apiRequest(name, payload, errorField, reaction)
 	xhr.onreadystatechange = reaction;
 	
 	// Echoing JSON to console
-	console.log("Sending \n"+JSON.stringify(payload));
+	console.log("Sending to "+url+": \n"+JSON.stringify(payload));
 	
 	// Sending JSON
 	try
@@ -123,7 +123,7 @@ function clearContactTable()
 	var rows = table.rows;
 	var i;
 	for (i = 1; i < rows.length; i++)
-		table.removeChild(rows[i]);
+		table.deleteRow(i);
 }
 
 // Transforms one Contact JSON into a row for contactTable and adds it
@@ -167,7 +167,7 @@ function addContactRow(rowNum, contact)
 	cell = row.insertCell(curCol+1);
 	var deleteButton = document.createElement("BUTTON");
 	deleteButton.innerHTML = "Delete";
-	deleteButton.onclick = "deleteRow(this)";
+	deleteButton.setAttribute("onclick", "deleteRow("+contactID+")");
 	cell.appendChild(deleteButton);
 }
 
@@ -179,9 +179,9 @@ function makeChangeableRow(contactID)
 	btn = document.getElementById("button"+contactID);
 	// Getting cells
 	var cells = row.getElementsByTagName("td");
-	var i, dataType;
+	var i, curCol, dataType;
 	// Replacing text of cells with editable text fields
-	for (i = 0; i < cells.length - 2; i++)
+	for (i = 0, curCol = 0; i < dataMap.length; i++, curCol++)
 	{
 		// Creating a text field within the cell 
 		dataType = dataMap[i];
@@ -189,15 +189,19 @@ function makeChangeableRow(contactID)
 		textField.setAttribute("type", "text");
 		// Gives each text field an ID that is referenced when changing a field
 		textField.id = contactID + dataType;
-		textField.value = cells[i].innerText;
+		textField.value = cells[curCol].innerText;
 		// Specific sizes for some fields
 		if (dataSize[i] != -1)
 		{
 			textField.maxlength = dataSize[i].toString();
-			textField.size = dataSize[i].toString();
+			textField.setAttribute("size", dataSize[i]);
+			textField.setAttribute("maxlength",dataSize[i]);
 		}
-		cells[i].innerHTML = "";
-		cells[i].appendChild(textField);
+		cells[curCol].innerHTML = "";
+		cells[curCol].appendChild(textField);
+		// Skipping address2 if address1 occupies both fields
+		if (cells[curCol].getAttribute("colspan") == "2")
+			i++;
 	}
 	// Changing button functionality to saving changes
 	btn.innerHTML = "Save";
@@ -214,7 +218,6 @@ function modifyContact(contactID)
 	FirstName:	data[contactID+"FirstName"].value,
 	LastName:	data[contactID+"LastName"].value,
 	Address1:	data[contactID+"Address1"].value,
-	Address2:	data[contactID+"Address2"].value,
 	City:		data[contactID+"City"].value,
 	State:		data[contactID+"State"].value,
 	Zip:		data[contactID+"Zip"].value,
@@ -222,6 +225,9 @@ function modifyContact(contactID)
 	Email:		data[contactID+"Email"].value,
 	ContactID:	contactID
 	};
+	// Address2 field may not exist
+	if (data[contactID+"Address2"] != null)
+		payload["Address2"] = data[contactID+"Address2"];
 	// Sending payload
 	var errorField = document.getElementById("responseField");
 	apiRequest("UpdateContact", payload, errorField, function() {
@@ -250,4 +256,17 @@ function changeRow(contactID)
 	// Returning original functionality to button
 	btn.innerHTML = "Change";
 	btn.setAttribute("onclick", "makeChangeableRow("+contactID+")");
+}
+
+// Removes the entry in the database associated with ContactID and removes the row from the displayed table
+function deleteRow(contactID)
+{
+	var payload = {ContactID: contactID};
+	var errorField = document.getElementById("responseText");
+	apiRequest("DeleteContact", payload, errorField, function(contactID) {
+		var responseField = document.getElementById("responseText");
+		responseField.innerHTML = "Your contact has been removed.";
+	});
+	var row = document.getElementById("row"+contactID);
+	row.parentNode.removeChild(row);
 }
