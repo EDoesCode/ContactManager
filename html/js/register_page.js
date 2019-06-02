@@ -49,8 +49,10 @@ function register()
 		{
 			if(this.readyState == 4 && this.status == 200)
 			{
+				console.log(xhr.responseText);
 				var jsonResponse = JSON.parse(xhr.responseText);
-				if(jsonResponse.error.length == 0)
+				console.log(jsonResponse);
+				if(jsonResponse.error == "")
 					window.location = baseURL + "contact_page.html";
 				else
 					alert(jsonResponse.error);

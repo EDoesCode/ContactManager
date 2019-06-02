@@ -6,7 +6,7 @@ var password = "";
 
 function register()
 {
-	window.location = baseURL + "register.html";
+	window.location = baseURL + "register_page.html";
 }
 
 function login()
