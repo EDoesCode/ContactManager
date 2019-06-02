@@ -44,7 +44,6 @@ function register()
 
 	try
 	{
-		var jsonResponse = JSON.parse(xhr.responseText);
 
 		xhr.onreadystatechange = function()
 		{
