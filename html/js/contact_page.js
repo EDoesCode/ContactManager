@@ -82,7 +82,6 @@ function searchContacts()
 // Builds contact table when called by a successful XML HTTP Request
 function buildContactTable()
 {
-	/*
 	if (this.readyState == 4 && this.status == 200) 
 	{	
 		// Reloading the contact list
@@ -95,9 +94,7 @@ function buildContactTable()
 			addContactRow(i, contactList[i]);
 		}
 	}
-	*/
-	
-		// Reloading the contact list
+		/*
 		// Testing script with hardcoded data
 		clearContactTable();
 		var contactList = new Array();
@@ -113,7 +110,7 @@ function buildContactTable()
 		for (i=0; i<contactList.length; i++)
 		{
 			addContactRow(i + 1, contactList[i]);
-		}
+		}*/
 }
 
 // Clears all rows (other than the header) from the Contact Table
