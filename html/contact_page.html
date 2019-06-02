@@ -19,7 +19,7 @@
 					<input type="text" id="searchText"/>
 					<input type="button" value="Search" onclick="searchContacts()"/>
 					<br /> <br />
-					<div id="responseText"></div>
+					<div id="responseText" class="errorField"></div>
 				</td>
 				<td id="listCell" rowspan="2">
 				<table id="contactTable">
@@ -35,25 +35,27 @@
 					<th class="emptycell" colspan="2"></th>
 				</tr>
 				</table>
+				<div id="tableResponse" class="errorField"></div>
 				</td>
 			</tr>
 			<tr>
 				<td id="addCell">
 				<h3>New Contact</h3>
 				<table id="addTable">
-					<tr><td>First Name:</td><td><input type="text" id="firstName"/></td></tr>
-					<tr><td>Last Name:</td> <td><input type="text" id="lastName"/></td></tr>
-					<tr><td>Phone:</td> <td><input type="text" id="phone" size="12" maxlength="12"/></td></tr>
-					<tr><td>Email:</td> <td><input type="text" id="email"/></td></tr>
-					<tr><td>Address (1):</td> <td><input type="text" id="address1"/></td></tr>
-					<tr><td>Address (2):</td> <td><input type="text" id="address2"/></td></tr>
-					<tr><td>City:</td> <td><input type="text" id="city"/></td></tr>
-					<tr><td>State:</td> <td><input type="text" id="state" size="2" maxlength="2"/></td></tr>
-					<tr><td>Zip:</td> <td><input type="text" id="zip" size="5" maxlength="5" /></td></tr>
+					<tr><td>First Name:</td><td><input type="text" id="FirstName"/></td></tr>
+					<tr><td>Last Name:</td> <td><input type="text" id="LastName"/></td></tr>
+					<tr><td>Phone:</td> <td><input type="text" id="Phone" size="12" maxlength="14"/></td></tr>
+					<tr><td>Email:</td> <td><input type="text" id="Email"/></td></tr>
+					<tr><td>Address (1):</td> <td><input type="text" id="Address1"/></td></tr>
+					<tr><td>Address (2):</td> <td><input type="text" id="Address2"/></td></tr>
+					<tr><td>City:</td> <td><input type="text" id="City"/></td></tr>
+					<tr><td>State:</td> <td><input type="text" id="State" size="2" maxlength="2"/></td></tr>
+					<tr><td>Zip:</td> <td><input type="text" id="Zip" size="5" maxlength="5" /></td></tr>
 					<tr><td colspan=2><input type="button" value="Add Contact" onclick="addContact()" /></td></tr>
 				</table>
+				<br />
+				<div id="addText" class="errorField"></div>
 				</td>
-				<div id="addText"></div>
 			</tr>
 			</table>
 		</div>

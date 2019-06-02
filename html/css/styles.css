@@ -27,6 +27,12 @@ body {
 	border-collapse: collapse;
 	table-layout: fixed;
 }
+
 #bodyTable th, #bodyTable td {
 
+}
+
+/* Styling for text that displays server responses/errors */
+.errorField {
+	text-align: center;
 }
