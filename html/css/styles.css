@@ -1,11 +1,13 @@
 body {
 	background-image: url("../images/background.jpg");
-	background-size: 100% auto;
+	background-size: auto auto;
+	background-position: center;
 	font-family: "Arial", "Sans-serif";
 }
 
 #mainBox {
-	width: 60%;
+	width: 80%;
+	min-width: 1500px;
 	margin: auto;
 	vertical-align: center;
 	border-style: outset;
@@ -23,6 +25,7 @@ body {
 	width: 100%;
 	min-height: 500px;
 	border-collapse: collapse;
+	table-layout: fixed;
 }
 #bodyTable th, #bodyTable td {
 
