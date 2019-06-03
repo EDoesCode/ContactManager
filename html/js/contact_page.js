@@ -124,7 +124,7 @@ function buildContactTable(contactList)
 	// Adding each row individually
 	for (i=0; i<contactList.length; i++)
 	{
-		addContactRow(i, contactList[i]);
+		addContactRow(i+1, contactList[i]);
 	}
 	/*
 		// Testing script with hardcoded data
