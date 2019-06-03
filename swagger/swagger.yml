@@ -1,0 +1,245 @@
+openapi: 3.0.0
+info:
+  title: Contact Manager API
+  description: "Contact Manager Web Application<br>UCF COP 4331 Spring 2019 Group 6 small project.<br><br>Team Members: <br>1. Enelson Castro<br>2. Mark Fuller<br>3. Thanh Dat Le<br>4. Nicholas Riley<br>5. Michael Santiago<br>Professor - Richard Leinecker"
+  contact:
+    name: API Support
+    email: fuller.mark.e@gmail.com
+  version: 1.0.0
+servers:
+  - url: https://cop4331.a2hosted.com/api
+    description: Purchased hosting account
+  - url: http://fullernetwork.com/api
+    description: Personal hosted account
+paths:
+  /Login.php:
+    post:
+      summary: Login to the application
+      description: "Logs a user into the application if username and password are correct.<br>Sets a session cookie to keep track of the user."
+      requestBody:
+        content:
+          application/json:
+            schema:
+                  type: object
+                  required:
+                    - AccountName
+                    - Password
+                  properties:
+                    AccountName:
+                      type: string
+                      example: mfuller
+                    Password:
+                      type: string
+                      example: mysecretpassword
+        description: Account object needed for login
+        required: true
+      responses:
+        "200":
+          description: 'OK: { "error" : "" }<br>Invalid: { "error" : "Missing required fields" }<br>Invalid: { "error" : "Invalid user name or password" }<br>Invalid: { "error" : "Any database error" }'
+  /Register.php:
+    post:
+      summary: Register a new user to the application
+      description: "Creates a new user account to access the application.<br>This will also log the user into the application as well.<br>The password supplied will be hashed and salted before storing into the database"
+      requestBody:
+        content:
+          application/json:
+            schema:
+                  type: object
+                  required:
+                    - FirstName
+                    - LastName
+                    - AccountName
+                    - Password
+                  properties:
+                    FirstName:
+                      type: string
+                      example: Mark
+                    LastName:
+                      type: string
+                      example: Fuller
+                    AccountName:
+                      type: string
+                      example: mfuller
+                    Password:
+                      type: string
+                      example: mysecretpassword
+        description: Complete Account object to be added for access
+        required: true
+      responses:
+        "200":
+          description: 'OK: { "error" : "" }<br>Invalid: { "error" : "Missing required fields" }<br>Invalid: { "error" : "Invalid user name or password" }'
+  /InsertContact.php:
+    post:
+      summary: Insert a new contact
+      description: "Inserts a new contact for the current logged in user.<br>The logged in user is determined from a session cookie set by either the Login.php or Register.php API call."
+      requestBody:
+        content:
+          application/json:
+            schema:
+                  type: object
+                  required:
+                      - LastName
+                  properties:
+                    FirstName:
+                      type: string
+                      example: Mark
+                    LastName:
+                      type: string
+                      example: Fuller
+                    Address1:  
+                      type: string
+                      example: 555 Some Street
+                    Address2:
+                      type: string
+                      example: Apt 203
+                    City:
+                      type: string
+                      example: Orlando
+                    State:
+                      type: string
+                      example: FL
+                    Zip:
+                      type: string
+                      example: '32822'
+                    Email:
+                      type: string
+                      example: user@example.com
+                    Phone:
+                      type: string
+                      example: '407-555-1212'                      
+        description: Contact object to be inserted into application
+        required: true
+      responses:
+        "200":
+          description: 'OK: { "error" : "" }<br>Invalid: { "error" : "Authorization required" }<br>Invalid: { "error" : "Missing required fields" }'
+  /ShowContacts.php:
+    post:
+      summary: Shows all contacts
+      description: "Shows all contacts for the current logged in user.<br>The logged in user is determined from a session cookie set by either the Login.php or Register.php API call."
+      requestBody:
+        content:
+          application/json:
+            schema:
+                  type: object  
+        description: Empty JSON Object
+        required: false
+      responses:
+        "200":
+          description: 'OK: <br>[<br>{ "ContactID": "1",
+        <br>"FirstName": "Mark",
+        <br>"LastName": "Fuller",
+        <br>"Address1": "3043 Holland Dr.",
+        <br>"Address2": "",
+        <br>"City": "Orlando",
+        <br>"State": "FL",
+        <br>"Zip": "32825",
+        <br>"Email": "fuller.mark.e@gmail.com",
+        <br>"Phone": "(407) 399-1373",
+        <br>"AccountID": "2"
+    <br>},
+    <br>{
+      "row2"<br>
+    }
+<br>]<br>Invalid: { "error" : "Authorization required" }<br>Invalid: { "error" : "No Records Found"}'
+  /FilterContact.php:
+    post:
+      summary: Shows a filtered list of contacts
+      description: "Allows for searching of contacts based on a single search filter.<br>The contact can be located by searching on any substring found in the record."
+      requestBody:
+        content:
+          application/json:
+            schema:
+                  type: object
+                  required:
+                    - SearchText
+                  properties:
+                    SearchText:
+                      type: string
+                      example: Orlando
+        description: Search criteria for limiting the display of records
+        required: true
+      responses:
+        "200":
+          description: 'OK: <br>[<br>{ "ContactID": "1",
+        <br>"FirstName": "Mark",
+        <br>"LastName": "Fuller",
+        <br>"Address1": "3043 Holland Dr.",
+        <br>"Address2": "",
+        <br>"City": "Orlando",
+        <br>"State": "FL",
+        <br>"Zip": "32825",
+        <br>"Email": "fuller.mark.e@gmail.com",
+        <br>"Phone": "(407) 399-1373",
+        <br>"AccountID": "2"
+    <br>},
+    <br>{
+      "row2"<br>
+    }
+<br>]<br>Invalid: { "error" : "Authorization required" }<br>Invalid: { "error" : "No Records Found"}<br>Invalid: { "error" : "Missing required fields" }'
+  /DeleteContact.php:
+    post:
+      summary: Deletes a contact that is owned
+      description: "Deletes a contact for the current logged in user."
+      requestBody:
+        content:
+          application/json:
+            schema:
+                  type: object
+                  required:
+                    - ContactID
+                  properties:
+                    ContactID:
+                      type: string
+                      example: '7'
+        description: Deletes a contact using the Primary Key for the contact
+        required: true
+      responses:
+        "200":
+          description: 'OK: { "error" : "" }<br>Invalid: { "error" : "Authorization required" }<br>Invalid: { "error" : "Missing required fields" }'
+  /UpdateContact.php:
+    post:
+      summary: Updates an existing contact
+      description: "Updates an existing contact for the current logged in user.<br>The logged in user is determined from a session cookie set by either the Login.php or Register.php API call.<br>To remove an entry, set it to a single space."
+      requestBody:
+        content:
+          application/json:
+            schema:
+                  type: object
+                  required:
+                    - ContactID
+                  properties:
+                    ContactID:
+                      type: string
+                      example: '7'
+                    FirstName:
+                      type: string
+                      example: Mark
+                    LastName:
+                      type: string
+                      example: Fuller
+                    Address1:  
+                      type: string
+                      example: 555 Some Street
+                    Address2:
+                      type: string
+                      example: Apt 203
+                    City:
+                      type: string
+                      example: Orlando
+                    State:
+                      type: string
+                      example: FL
+                    Zip:
+                      type: string
+                      example: '32822'
+                    Email:
+                      type: string
+                      example: user@example.com
+                    Phone:
+                      type: string
+                      example: '407-555-1212'                      
+        description: Contact object to be updated
+        required: true
+      responses:
+        "200":
+          description: 'OK: { "error" : "" }<br>Invalid: { "error" : "Authorization required" }<br>Invalid: { "error" : "Missing required fields" }'
