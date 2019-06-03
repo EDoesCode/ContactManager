@@ -28,8 +28,13 @@ function apiRequest(name, payload, errorField, reaction)
 				// Checking received JSON for a non-null error field
 				console.log("Received from "+url+":\n"+this.responseText);
 				var parsedJSON = JSON.parse(this.responseText);
-				if (parsedJSON.error == "")
-					reaction();
+				console.log("Parsed JSON successfully");
+				if (parsedJSON.error == "" || parsedJSON.error === undefined)
+				{
+					console.log("JSON does not contain error");
+					reaction(parsedJSON);
+					console.log("Function completed successfully.");
+				}
 				else
 				{
 					throw new Error(parsedJSON.error);
@@ -80,28 +85,8 @@ function addContact()
 		data[dataMap[i]].value = "";
 	var errorField = document.getElementById("addText");
 	apiRequest("InsertContact", payload, errorField, function() {
-		// Confirming success to the user
-		var errorField = document.getElementById("addText");
-		errorField.innerHTML = "Your contact has been added.";
-		
-		// Adding contact to list
-		try
-		{
-			var contact = JSON.parse(this.responseText);
-			// If JSON has ContactID, it is considered a valid contact
-			if (contact["ContactID"] != null)
-			{
-				var table = document.getElementById("contactTable");
-				addContactRow(table.rows.length, contact);
-			}
-		}
-		catch(err)
-		{
-			// JSON was not parseable
-			var errorField = document.getElementById("addText");
-			errorField.innerHTML = "Did not receive response from server.";
-		}
-		
+		// Reloading the page
+		window.location.reload(true);
 	});
 }
 
@@ -120,18 +105,20 @@ function searchContacts()
 	// Clearing error field
 	var errorField = document.getElementById("responseText");
 	errorField.innerHTML = "";
-	var srch = document.getElementById("searchText").value;
+	var search = document.getElementById("searchText").value;
+	var searchText = search.value;
+	// Clearing search field
+	search.value = "";
 	
 	// Payload (to be JSONified later)
-	var payload = {SearchText: srch};
+	var payload = {SearchText: search};
 	apiRequest("FilterContacts", payload, errorField, buildContactTable);
 }
 
-// Builds contact table when called by a successful XML HTTP Request
-function buildContactTable()
+// Builds contact table using supplied contactList (parsed JSON Object)
+function buildContactTable(contactList)
 {
 	// Reloading the contact list
-	var contactList = JSON.parse(this.responseText);
 	clearContactTable();
 	var i;
 	// Adding each row individually
