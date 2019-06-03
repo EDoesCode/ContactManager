@@ -61,6 +61,21 @@ function apiRequest(name, payload, errorField, reaction)
 	}
 }
 
+// Refreshes the page
+function refreshPage()
+{
+	window.location.reload(true);
+}
+
+// Calls the API to log the user out and returns the user to the login page
+function logOut()
+{
+	apiRequest("Logout", payload, errorField, function() {
+		// Reloading the page
+		window.location = https://fullernetwork.com/login_page.html;
+	});
+}
+
 // Adds a contact to the database and to the table
 function addContact()
 {
