@@ -3,12 +3,12 @@ var dataMap = ["FirstName", "LastName", "Phone", "Email", "Address1", "Address2"
 
 // Lists the sizes of various fields of a Contact in the order they are displayed, -1 for infinite size
 var dataSize = [-1, -1, 15, -1, -1, -1, -1, 2, 5];
+var urlBase = "https://cop4331.a2hosted.com/api";
 
 // Sends an XML post to the given API name using the given JS object as payload, and runs the provided function (reaction) on success
 // If the XML post fails (for whatever reason) it outputs the text in the given error text field
 function apiRequest(name, payload, errorField, reaction)
 {
-	var urlBase = "https://cop4331.a2hosted.com/api";
 	var apiExtension = ".php";
 	// Starting post request
 	var url = urlBase + '/' + name + apiExtension;
@@ -72,7 +72,7 @@ function logOut()
 {
 	apiRequest("Logout", payload, errorField, function() {
 		// Reloading the page
-		window.location = https://fullernetwork.com/login_page.html;
+		window.location = urlBase+"/login_page.html";
 	});
 }
 
