@@ -70,10 +70,11 @@ function refreshPage()
 // Calls the API to log the user out and returns the user to the login page
 function logOut()
 {
-	apiRequest("Logout", payload, errorField, function() {
-		// Reloading the page
-		window.location = urlBase+"/login_page.html";
-	});
+	payload = "{}"
+	errorField = null;
+	apiRequest("Logout", payload, errorField, function() {});
+	// Reloading the page
+	window.location = urlBase+"/login_page.html";
 }
 
 // Adds a contact to the database and to the table
